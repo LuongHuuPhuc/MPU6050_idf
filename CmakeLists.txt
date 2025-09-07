@@ -1,5 +1,5 @@
 set(req I2C_dev)
 set(source "mpu6050.c" "mpu6050_ll.c" "mpu6050_log.c")
 idf_component_register(SRCS ${source}
-                      INCLUDE_DIRS "."
+                      INCLUDE_DIRS "include"
                       REQUIRES ${req})
