@@ -92,5 +92,5 @@ void mpu6050_readData_task(void *pvParameter){
 ***
 
 ## References ##
-Dependency: https://github.com/LuongHuuPhuc/I2C_dev_Middleware_Layer_idf
-Datasheet:  https://www.alldatasheet.com/datasheet-pdf/pdf/1132807/TDK/MPU-6050.html 
+* Dependency: https://github.com/LuongHuuPhuc/I2C_dev_Middleware_Layer_idf
+* Datasheet:  https://www.alldatasheet.com/datasheet-pdf/pdf/1132807/TDK/MPU-6050.html 
