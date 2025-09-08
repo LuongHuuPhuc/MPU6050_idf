@@ -94,3 +94,27 @@ void mpu6050_readData_task(void *pvParameter){
 ## References ##
 * Dependency: https://github.com/LuongHuuPhuc/I2C_dev_Middleware_Layer_idf
 * Datasheet:  https://www.alldatasheet.com/datasheet-pdf/pdf/1132807/TDK/MPU-6050.html 
+
+## Accelerometer và Gyroscope ##
+- Đây là hai cảm biến quán tính, thường thấy trong các thiết bị như smartphone, drone, robot,...nhưng chúng lại đo **hai loại chuyển động khác nhau**: 
+
+### 1. Accelerometer (Gia tốc kế) ###
+- Đo **gia tốc tuyến tính (linear acceleration)** theo các trục x, y, z. Hoặc có thể hiểu là cảm biến đo *gia tốc trọng trường* 
+- Nó cho biết vật thể đang chịu lực tác động theo hướng nào (ví dụ rơi tự do, bị nghiêng, rung động,...)
+- Ứng dụng: 
+  - Xác định thiết bị đang dựng đứng hay nằm ngang (xoay màn hình điện thoại,...)
+  - Đếm bước chân (theo dao động khi đi bộ)
+  - Phát hiện rơi tự do (bật cơ chế bảo vệ trong ổ cứng)
+- Hạn chế: 
+  - Không thể tự xác định được chính xác góc quay, vì nó không đo được chuyển động xoay mà chỉ đo được lực tuyến tính
+  - Nếu tích phân nhiều lần sẽ dễ sinh ra sai số lớn 
+
+### 2. Gyroscope (Con quay hồi chuyển) ###
+- Đo **tốc độ góc(angular velocity)** quanh các trục x, y, z
+- Nó cho biết đang xoay bao nhiêu, theo chiều nào
+- Ứng dụng: 
+  - Giữ thăng bằng drone, robot (biết đang xoay ngang bao nhiêu để điều chỉnh)
+  - Điều khiển chuột bay, tay cầm chơi game (đo xoay)
+  - Camera chống rung (OIS)
+- Hạn chế:
+  - Bị drift (trôi) theo thời gian nếu chỉ dựa vào gyro (tích phân vận tốc góc ra góc quay)
