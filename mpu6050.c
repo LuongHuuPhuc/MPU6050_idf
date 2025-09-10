@@ -712,6 +712,14 @@ esp_err_t mpu6050_sensor_config(I2C_dev_init_t *dev, mpu6050_config_t *config){
     return ret;
   }else{
     ESP_LOGI(pcTaskGetName(NULL), "Accel Range & Sens set OK !: %s\r\n", mpu6050_accel_range_to_str(config->accel_range));
+    uint8_t ret_debug = 0;
+    ret = mpu6050_read_byte_from_reg(dev, MPU6050_ACCEL_CONFIG, &ret_debug);
+    if(ret == ESP_OK){
+      uint8_t range_cfg = (ret_debug >> 3) & 0x03;
+      ESP_LOGD(pcTaskGetName(NULL), "Accel range = %d from ACCEL CONFIG at [4:3]: 0x%02X", range_cfg, ret_debug);
+    }else{
+      ESP_LOGE(pcTaskGetName(NULL), "Failed to read ACCEL_CONFIG reg !");
+    }
   }
 
   ret = mpu6050_set_gyro_range(dev, config->gyro_range, &config->sens);
@@ -720,6 +728,14 @@ esp_err_t mpu6050_sensor_config(I2C_dev_init_t *dev, mpu6050_config_t *config){
     return ret;
   }else {
     ESP_LOGI(pcTaskGetName(NULL), "Gyro Range & Sens set OK !: %s\r\n", mpu6050_gyro_range_to_str(config->gyro_range));
+    uint8_t ret_debug = 0;
+    ret = mpu6050_read_byte_from_reg(dev, MPU6050_GYRO_CONFIG, &ret_debug);
+    if(ret == ESP_OK){
+      uint8_t range_cfg = (ret_debug >> 3) & 0x03;
+      ESP_LOGD(pcTaskGetName(NULL), "Gyro range = %d from GYRO CONFIG at [4:3]: 0x%02X", range_cfg, ret_debug);
+    }else{
+      ESP_LOGE(pcTaskGetName(NULL), "Failed to read GYRO_CONFIG reg !");
+    }
   }
 
   /* 7. Set che do Standby cho Accel va Gyro */
@@ -868,9 +884,9 @@ esp_err_t mpu6050_fifo_read_raw(I2C_dev_init_t *dev, mpu6050_raw_data_t *raw_dat
     }
 
     if(fifo_mask & MPU6050_FIFO_ACCEL){
-      raw_data[i].accel_x = (int16_t)((buf[base + offset]) << 8 | buf[base + offset + 1]); //Byte cao -> Byte thap
-      raw_data[i].accel_y = (int16_t)((buf[base + offset + 2]) << 8 | buf[base + offset + 3]); //Byte cao -> Byte thap
-      raw_data[i].accel_z = (int16_t)((buf[base + offset + 4]) << 8 | buf[base + offset + 5]); //Byte cao -> Byte thap
+      raw_data[i].accel_x = (int16_t)(((buf[base + offset]) << 8) | buf[base + offset + 1]); //Byte cao -> Byte thap
+      raw_data[i].accel_y = (int16_t)(((buf[base + offset + 2]) << 8) | buf[base + offset + 3]); //Byte cao -> Byte thap
+      raw_data[i].accel_z = (int16_t)(((buf[base + offset + 4]) << 8) | buf[base + offset + 5]); //Byte cao -> Byte thap
       offset += 6;
     }
   }
