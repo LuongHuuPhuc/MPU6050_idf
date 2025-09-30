@@ -897,11 +897,11 @@ esp_err_t mpu6050_fifo_read_raw(I2C_dev_init_t *dev, mpu6050_raw_data_t *raw_dat
 
 esp_err_t mpu6050_register_read_raw(I2C_dev_init_t *dev, mpu6050_raw_data_t *raw_data, size_t samples){
   IS_NULL_ARG(dev);
+  uint8_t buf[14];
 
   //Moi lan doc truc tiep duoc 14 bytes (Accel 6 -> Temp 2 -> Gyro 6)
   //Muon doc nhieu sample hon -> phai lap lai "samples" nhieu lan
   for(size_t i = 0; i < samples; i++){
-    uint8_t buf[14];
 
     //Doc lien tuc 14 bytes tu ACCEL_XOUT_H (0x3B)
     I2C_DEV_TAKE_MUTEX(dev);
